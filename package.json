@@ -1,14 +1,32 @@
 {
-  "name": "${PROJECT_NAME}",
-  "version": "1.0.0",
-  "description": "",
+  "name": "e2e-ai-tests",
+  "version": "0.1.0",
+  "description": "E2E testing framework powered by LLM and natural language test descriptions",
+  "type": "module",
   "main": "dist/index.js",
-  "scripts": {
-    "build": "tsc"
+  "bin": {
+    "e2e-ai-tests": "./dist/cli.js"
   },
-  "dependencies": {},
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/cli.js",
+    "dev": "tsc && node dist/cli.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "ai": "^4.0.0",
+    "@ai-sdk/anthropic": "^1.0.0",
+    "commander": "^12.1.0",
+    "chalk": "^5.3.0",
+    "glob": "^11.0.0"
+  },
   "devDependencies": {
+    "@types/node": "^22.0.0",
     "typescript": "^5.5.3"
   },
-  "private": true
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }
