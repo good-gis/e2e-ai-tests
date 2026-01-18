@@ -1,6 +1,7 @@
 import {Client} from '@modelcontextprotocol/sdk/client/index.js';
 import {StdioClientTransport} from '@modelcontextprotocol/sdk/client/stdio.js';
 import type {Config} from './interfaces/config.interface.js';
+import type {CleanupOptions} from './interfaces/test-json.interface.js';
 import {MCPTool} from "./interfaces/mcp-tool.interface.js";
 
 export class MCPClient {
@@ -76,5 +77,38 @@ export class MCPClient {
       return result.content[0].data || null;
     }
     return null;
+  }
+
+  async cleanup(options: CleanupOptions): Promise<void> {
+    if (!this.client) {
+      return;
+    }
+
+    const scripts: string[] = [];
+
+    if (options.localStorage) {
+      scripts.push('localStorage.clear()');
+    }
+
+    if (options.sessionStorage) {
+      scripts.push('sessionStorage.clear()');
+    }
+
+    if (scripts.length > 0) {
+      await this.callTool('browser_evaluate', {
+        function: `() => { ${scripts.join('; ')}; }`,
+      });
+    }
+
+    if (options.cookies) {
+      await this.callTool('browser_evaluate', {
+        function: `() => {
+          document.cookie.split(';').forEach(cookie => {
+            const name = cookie.split('=')[0];
+            document.cookie = name.trim() + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+          });
+        }`,
+      });
+    }
   }
 }

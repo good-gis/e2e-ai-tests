@@ -35,6 +35,7 @@ export async function parseTestFile(filePath: string): Promise<ParsedTest> {
     steps: test.steps,
     expectedResults: test.expectedResults,
     preconditions: test.preconditions,
+    cleanup: test.cleanup,
     filePath,
   };
 }

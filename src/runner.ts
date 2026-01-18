@@ -249,6 +249,16 @@ export class TestRunner {
       }
     }
 
+    // Cleanup browser data if requested
+    if (test.cleanup) {
+      try {
+        await this.mcpClient.cleanup(test.cleanup);
+        this.reporter.logInfo('Browser data cleaned up');
+      } catch (err) {
+        this.reporter.logError(`Cleanup failed: ${err}`);
+      }
+    }
+
     const result: TestResult = {
       name: test.name,
       filePath: test.filePath,

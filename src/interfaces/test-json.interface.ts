@@ -1,3 +1,9 @@
+export interface CleanupOptions {
+    cookies?: boolean;
+    localStorage?: boolean;
+    sessionStorage?: boolean;
+}
+
 export interface TestJson {
     name: string;
     description?: string;
@@ -5,4 +11,5 @@ export interface TestJson {
     steps: string[];
     expectedResults: string[];
     preconditions?: string[];
+    cleanup?: CleanupOptions;
 }
