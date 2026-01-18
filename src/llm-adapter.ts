@@ -134,58 +134,6 @@ export class LLMAdapter {
     };
   }
 
-  async sendToolResult(toolCallId: string, result: unknown): Promise<LLMResult> {
-    // Add tool result to conversation
-    const toolResultContent: Anthropic.ToolResultBlockParam = {
-      type: 'tool_result',
-      tool_use_id: toolCallId,
-      content: typeof result === 'string' ? result : JSON.stringify(result),
-    };
-
-    this.conversationHistory.push({
-      role: 'user',
-      content: [toolResultContent] as unknown as Anthropic.ContentBlock[],
-    });
-
-    // Get MCP tools from conversation context (we need to pass them again)
-    // For simplicity, we'll make another request without tools if there are no more tool calls needed
-    const response = await this.client.messages.create({
-      model: this.config.llm.model,
-      max_tokens: 4096,
-      system: SYSTEM_PROMPT,
-      messages: this.conversationHistory.map(msg => ({
-        role: msg.role,
-        content: msg.content as Anthropic.ContentBlockParam[],
-      })),
-    });
-
-    let textContent = '';
-    const toolCalls: ToolCall[] = [];
-
-    for (const block of response.content) {
-      if (block.type === 'text') {
-        textContent += block.text;
-      } else if (block.type === 'tool_use') {
-        toolCalls.push({
-          id: block.id,
-          name: block.name,
-          input: block.input as Record<string, unknown>,
-        });
-      }
-    }
-
-    this.conversationHistory.push({
-      role: 'assistant',
-      content: response.content,
-    });
-
-    return {
-      content: textContent,
-      toolCalls,
-      stopReason: response.stop_reason || 'end_turn',
-    };
-  }
-
   async sendToolResults(
     results: Array<{ toolCallId: string; result: unknown }>,
     tools: MCPTool[]
@@ -264,23 +212,5 @@ ${test.expectedResults.map(r => `- ${r}`).join('\n')}
 ${pageState}
 
 Start by navigating to the URL, then execute each step. After completing all steps, verify the expected results and report whether the test passed or failed.`;
-  }
-
-  buildVerificationPrompt(test: ParsedTest, pageState: string): string {
-    return `Now verify the expected results for the test "${test.name}".
-
-**Expected results:**
-${test.expectedResults.map(r => `- ${r}`).join('\n')}
-
-**Current page state:**
-${pageState}
-
-Analyze the page state and determine if ALL expected results are satisfied.
-
-Respond with:
-- PASS if all expected results are satisfied
-- FAIL if any expected result is not satisfied
-
-Explain your reasoning for each expected result.`;
   }
 }

@@ -143,8 +143,4 @@ export class Reporter {
   logInfo(message: string): void {
     console.log(chalk.cyan(message));
   }
-
-  logWarning(message: string): void {
-    console.log(chalk.yellow(`Warning: ${message}`));
-  }
 }

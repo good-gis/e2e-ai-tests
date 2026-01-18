@@ -2,7 +2,7 @@ import { readFile } from 'fs/promises';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import type { Config } from './interfaces/config.interface.js';
-import {DEFAULT_CONFIG} from "./constants/default-config.const.js";
+import {DEFAULT_CONFIG} from "./config/default-config.js";
 
 function resolveEnvVars(value: string): string {
   return value.replace(/\$\{([^}]+)\}/g, (_, envVar) => {
@@ -87,7 +87,7 @@ export async function loadConfig(configPath?: string): Promise<Config> {
 
   // Validate
   if (!config.llm.apiKey) {
-    throw new Error('ANTHROPIC_API_KEY environment variable is required');
+    throw new Error('LLM_API_KEY environment variable is required');
   }
 
   return config;
