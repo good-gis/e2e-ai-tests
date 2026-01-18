@@ -37,8 +37,18 @@ WORKFLOW:
 4. Perform actions using the ref number
 5. After actions, call browser_snapshot again to verify the result
 
-When you complete all steps, analyze the final page state and determine if the expected results are met.
-Respond with PASS or FAIL and explain your reasoning.
+CRITICAL - VERIFICATION OF EXPECTED RESULTS:
+After completing all steps, you MUST verify EACH expected result against the actual page state.
+- Compare the EXACT text/values from expected results with what you see on the page
+- Pay attention to exact wording - "Купить молоко" is NOT the same as "Купить кефир"
+- If ANY expected result does not match the actual page state, the test FAILS
+
+FINAL VERDICT (REQUIRED):
+You MUST end your response with one of these exact phrases:
+- "ТЕСТ ПРОЙДЕН" or "TEST PASSED" - only if ALL expected results are verified
+- "ТЕСТ ПРОВАЛЕН" or "TEST FAILED" - if ANY expected result is not met
+
+Before giving the verdict, list each expected result and whether it was found on the page.
 
 Respond in the same language as the test instructions (Russian or English).`;
 

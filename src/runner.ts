@@ -100,7 +100,7 @@ export class TestRunner {
     const steps: TestStep[] = [];
     const screenshots: string[] = [];
     let error: string | undefined;
-    let status: 'passed' | 'failed' | 'skipped' = 'passed';
+    let status: 'passed' | 'failed' | 'skipped' = 'failed'; // Default to failed until explicitly passed
 
     this.reporter.startTest(test.name, test.filePath);
     this.llmAdapter.resetConversation();
@@ -131,14 +131,14 @@ export class TestRunner {
           // No more tool calls - LLM is done
           // Check if the response indicates pass or fail
           const responseText = response.content.toLowerCase();
-          if (responseText.includes('pass') || responseText.includes('passed') ||
-              responseText.includes('успешно') || responseText.includes('пройден')) {
+          if (responseText.includes('test passed') || responseText.includes('тест пройден')) {
             status = 'passed';
-          } else if (responseText.includes('fail') || responseText.includes('failed') ||
-                     responseText.includes('провал') || responseText.includes('не удалось')) {
+          } else if (responseText.includes('test failed') || responseText.includes('тест провален') ||
+                     responseText.includes('fail') || responseText.includes('провал') || responseText.includes('не удалось')) {
             status = 'failed';
             error = response.content;
           }
+          // If no explicit verdict, status remains 'failed' (default)
           break;
         }
 
@@ -209,14 +209,14 @@ export class TestRunner {
         if (response.stopReason !== 'tool_use' && response.toolCalls.length === 0) {
           // LLM finished
           const responseText = response.content.toLowerCase();
-          if (responseText.includes('pass') || responseText.includes('passed') ||
-              responseText.includes('успешно') || responseText.includes('пройден')) {
+          if (responseText.includes('test passed') || responseText.includes('тест пройден')) {
             status = 'passed';
-          } else if (responseText.includes('fail') || responseText.includes('failed') ||
-                     responseText.includes('провал') || responseText.includes('не удалось')) {
+          } else if (responseText.includes('test failed') || responseText.includes('тест провален') ||
+                     responseText.includes('fail') || responseText.includes('провал') || responseText.includes('не удалось')) {
             status = 'failed';
             error = response.content;
           }
+          // If no explicit verdict, status remains 'failed' (default)
           break;
         }
       }
