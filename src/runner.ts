@@ -1,6 +1,6 @@
 import { glob } from 'glob';
 import { writeFile, mkdir } from 'fs/promises';
-import { join, dirname } from 'path';
+import { join } from 'path';
 import type { ParsedTest } from './interfaces/parsed-test.interface.js';
 import type { Config } from './interfaces/config.interface.js';
 import type { TestResult } from './interfaces/test-result.interface.js';

@@ -3,12 +3,7 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 import type { Config } from './interfaces/config.interface.js';
 import {DEFAULT_CONFIG} from "./config/default-config.js";
-
-function resolveEnvVars(value: string): string {
-  return value.replace(/\$\{([^}]+)\}/g, (_, envVar) => {
-    return process.env[envVar] || '';
-  });
-}
+import {resolveEnvVars} from "./utils/resolve-env-vars.js";
 
 export async function loadConfig(configPath?: string): Promise<Config> {
   const possiblePaths = configPath
@@ -72,7 +67,7 @@ export async function loadConfig(configPath?: string): Promise<Config> {
   };
 
   // Resolve environment variables
-  config.llm.apiKey = resolveEnvVars(config.llm.apiKey) || process.env.ANTHROPIC_API_KEY || '';
+  config.llm.apiKey = resolveEnvVars(config.llm.apiKey) || process.env.ANTHROPIC_API_KEY || config.llm.apiKey || '';
 
   // Apply environment overrides
   if (process.env.E2E_HEADED === 'true') {

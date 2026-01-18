@@ -1,12 +1,7 @@
 import {Client} from '@modelcontextprotocol/sdk/client/index.js';
 import {StdioClientTransport} from '@modelcontextprotocol/sdk/client/stdio.js';
 import type {Config} from './interfaces/config.interface.js';
-
-export interface MCPTool {
-  name: string;
-  description: string;
-  inputSchema: Record<string, unknown>;
-}
+import {MCPTool} from "./interfaces/mcp-tool.interface.js";
 
 export class MCPClient {
   private client: Client | null = null;
