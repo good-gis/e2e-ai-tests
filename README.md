@@ -2,6 +2,8 @@
 
 Welcome to the AI-powered E2E testing framework! Write tests in natural language JSON format, and let Claude AI execute them in the browser. 🚀
 
+[Смотреть demo](https://github.com/good-gis/e2e-ai-tests/blob/main/public/demo.mov)
+
 ## 🌟 Features
 
 - 📝 **Natural Language Tests**: Write test steps in plain Russian or English.
