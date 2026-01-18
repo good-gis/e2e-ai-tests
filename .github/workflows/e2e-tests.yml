@@ -1,0 +1,51 @@
+name: E2E Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_pattern:
+        description: 'Test pattern (e.g., tests/*.json)'
+        required: false
+        default: ''
+
+jobs:
+  e2e-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -n "${{ github.event.inputs.test_pattern }}" ]; then
+            npm run start run "${{ github.event.inputs.test_pattern }}"
+          else
+            npm run start run
+          fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            .e2e-history/
+          retention-days: 30
