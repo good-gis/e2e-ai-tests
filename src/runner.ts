@@ -1,7 +1,11 @@
 import { glob } from 'glob';
 import { writeFile, mkdir } from 'fs/promises';
 import { join, dirname } from 'path';
-import type { Config, ParsedTest, TestResult, TestStep, RunResult } from './types.js';
+import type { ParsedTest } from './interfaces/parsed-test.interface.js';
+import type { Config } from './interfaces/config.interface.js';
+import type { TestResult } from './interfaces/test-result.interface.js';
+import type { TestStep } from './interfaces/test-step.interface.js';
+import type { RunResult } from './interfaces/run-result.interface.js';
 import { parseTestFile } from './parser.js';
 import { MCPClient } from './mcp-client.js';
 import { LLMAdapter } from './llm-adapter.js';

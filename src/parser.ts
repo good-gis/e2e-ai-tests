@@ -1,5 +1,5 @@
 import { readFile } from 'fs/promises';
-import type { ParsedTest } from './types.js';
+import type { ParsedTest } from './interfaces/parsed-test.interface.js';
 
 interface TestJson {
   name: string;

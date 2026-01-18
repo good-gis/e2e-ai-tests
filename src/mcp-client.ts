@@ -1,6 +1,6 @@
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
-import type { Config } from './types.js';
+import type { Config } from './interfaces/config.interface.js';
 
 export interface MCPTool {
   name: string;

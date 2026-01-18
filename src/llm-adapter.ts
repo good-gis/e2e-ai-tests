@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
-import type { Config, ParsedTest } from './types.js';
+import type { Config } from './interfaces/config.interface.js';
+import type { ParsedTest } from './interfaces/parsed-test.interface.js';
 import type { MCPTool } from './mcp-client.js';
 
 const SYSTEM_PROMPT = `You are an E2E test executor. Your task is to perform actions on web pages based on natural language instructions.

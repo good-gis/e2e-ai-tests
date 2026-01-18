@@ -1,7 +1,10 @@
 import chalk from 'chalk';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
-import type { Config, TestResult, RunResult, TestStep } from './types.js';
+import type { Config } from './interfaces/config.interface.js';
+import type { TestResult } from './interfaces/test-result.interface.js';
+import type { TestStep } from './interfaces/test-step.interface.js';
+import type { RunResult } from './interfaces/run-result.interface.js';
 
 export class Reporter {
   private config: Config;
