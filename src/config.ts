@@ -2,38 +2,13 @@ import { readFile } from 'fs/promises';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import type { Config } from './interfaces/config.interface.js';
+import {DEFAULT_CONFIG} from "./constants/default-config.const.js";
 
-const DEFAULT_CONFIG: Config = {
-  llm: {
-    provider: 'anthropic',
-    model: 'claude-sonnet-4-20250514',
-    apiKey: '',
-  },
-  browser: {
-    headless: true,
-    viewport: {
-      width: 1280,
-      height: 720,
-    },
-  },
-  execution: {
-    maxStepsPerTest: 50,
-    retryAttempts: 3,
-    timeout: 30000,
-  },
-  tests: {
-    pattern: 'tests/**/*.md',
-  },
-  debug: {
-    screenshots: 'on-failure',
-    logSteps: true,
-    headed: false,
-  },
-  history: {
-    enabled: true,
-    directory: '.e2e-results',
-  },
-};
+function resolveEnvVars(value: string): string {
+  return value.replace(/\$\{([^}]+)\}/g, (_, envVar) => {
+    return process.env[envVar] || '';
+  });
+}
 
 export async function loadConfig(configPath?: string): Promise<Config> {
   const possiblePaths = configPath
@@ -97,7 +72,7 @@ export async function loadConfig(configPath?: string): Promise<Config> {
   };
 
   // Resolve environment variables
-  config.llm.apiKey = config.llm.apiKey || process.env.ANTHROPIC_API_KEY || '';
+  config.llm.apiKey = resolveEnvVars(config.llm.apiKey) || process.env.ANTHROPIC_API_KEY || '';
 
   // Apply environment overrides
   if (process.env.E2E_HEADED === 'true') {

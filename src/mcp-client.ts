@@ -1,6 +1,6 @@
-import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
-import type { Config } from './interfaces/config.interface.js';
+import {Client} from '@modelcontextprotocol/sdk/client/index.js';
+import {StdioClientTransport} from '@modelcontextprotocol/sdk/client/stdio.js';
+import type {Config} from './interfaces/config.interface.js';
 
 export interface MCPTool {
   name: string;
@@ -84,12 +84,10 @@ export class MCPClient {
       throw new Error('MCP client not connected');
     }
 
-    const result = await this.client.callTool({
+    return await this.client.callTool({
       name,
       arguments: args,
     });
-
-    return result;
   }
 
   async navigate(url: string): Promise<unknown> {

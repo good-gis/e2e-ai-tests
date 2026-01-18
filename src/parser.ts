@@ -1,14 +1,6 @@
 import { readFile } from 'fs/promises';
 import type { ParsedTest } from './interfaces/parsed-test.interface.js';
-
-interface TestJson {
-  name: string;
-  description?: string;
-  url: string;
-  steps: string[];
-  expectedResults: string[];
-  preconditions?: string[];
-}
+import {TestJson} from "./interfaces/test-json.interface.js";
 
 export async function parseTestFile(filePath: string): Promise<ParsedTest> {
   const content = await readFile(filePath, 'utf-8');

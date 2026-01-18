@@ -2,6 +2,9 @@ import Anthropic from '@anthropic-ai/sdk';
 import type { Config } from './interfaces/config.interface.js';
 import type { ParsedTest } from './interfaces/parsed-test.interface.js';
 import type { MCPTool } from './mcp-client.js';
+import {Message} from "./interfaces/message.interface.js";
+import {LLMResult} from "./interfaces/llm-result.interface.js";
+import {ToolCall} from "./interfaces/tool-call.interface.js";
 
 const SYSTEM_PROMPT = `You are an E2E test executor. Your task is to perform actions on web pages based on natural language instructions.
 
@@ -38,23 +41,6 @@ When you complete all steps, analyze the final page state and determine if the e
 Respond with PASS or FAIL and explain your reasoning.
 
 Respond in the same language as the test instructions (Russian or English).`;
-
-export interface Message {
-  role: 'user' | 'assistant';
-  content: string | Array<Anthropic.ContentBlock>;
-}
-
-export interface ToolCall {
-  id: string;
-  name: string;
-  input: Record<string, unknown>;
-}
-
-export interface LLMResult {
-  content: string;
-  toolCalls: ToolCall[];
-  stopReason: string;
-}
 
 export class LLMAdapter {
   private client: Anthropic;

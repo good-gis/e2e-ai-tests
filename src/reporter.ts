@@ -9,7 +9,6 @@ import type { RunResult } from './interfaces/run-result.interface.js';
 export class Reporter {
   private config: Config;
   private startTime: number = 0;
-  private currentTest: string = '';
 
   constructor(config: Config) {
     this.config = config;
@@ -22,7 +21,6 @@ export class Reporter {
   }
 
   startTest(testName: string, filePath: string): void {
-    this.currentTest = testName;
     if (this.config.debug.logSteps) {
       console.log(chalk.yellow(`\n▶ ${testName}`));
       console.log(chalk.gray(`  ${filePath}`));
